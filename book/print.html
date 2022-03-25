@@ -1,0 +1,1130 @@
+<!DOCTYPE HTML>
+<html lang="zh_CN" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>多进程管理</title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="start.html"><strong aria-hidden="true">1.</strong> 序言</a></li><li class="spacer"></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 理论</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="process/3.html"><strong aria-hidden="true">2.1.</strong> 什么是进程</a></li><li class="chapter-item expanded "><a href="process/1.html"><strong aria-hidden="true">2.2.</strong> 线程进程区别</a></li><li class="chapter-item expanded "><a href="process/2.html"><strong aria-hidden="true">2.3.</strong> stream/socket</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> pcntl_*</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="pcntl_exec/1.html"><strong aria-hidden="true">3.1.</strong> pcntl_exec()</a></li><li class="chapter-item expanded "><a href="pcntl_wait/pcntl_wait.html"><strong aria-hidden="true">3.2.</strong> pcntl_wait()||monitor</a></li><li class="chapter-item expanded "><a href="pcntl_wait/pcntl_waitpid.html"><strong aria-hidden="true">3.3.</strong> pcntl_waitpid()</a></li><li class="chapter-item expanded "><a href="pcntl_wait/pcntl_wtermsig.html"><strong aria-hidden="true">3.4.</strong> pcntl_wtermsig()</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> posix_*</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="posix/posix_getpid.html"><strong aria-hidden="true">4.1.</strong> posix_getpid()</a></li><li class="chapter-item expanded "><a href="posix/posix_getppid.html"><strong aria-hidden="true">4.2.</strong> posix_getppid()</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> 进程守护deamon</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="daemon/1.html"><strong aria-hidden="true">5.1.</strong> 1.创建子进程，终止父进程</a></li><li class="chapter-item expanded "><a href="daemon/2.html"><strong aria-hidden="true">5.2.</strong> 2.子进程中创建新会话</a></li><li class="chapter-item expanded "><a href="daemon/3.html"><strong aria-hidden="true">5.3.</strong> 3.改变工作目录</a></li><li class="chapter-item expanded "><a href="daemon/4.html"><strong aria-hidden="true">5.4.</strong> 4.重设文件创建掩码</a></li><li class="chapter-item expanded "><a href="daemon/5.html"><strong aria-hidden="true">5.5.</strong> 5.关闭文件描述符</a></li><li class="chapter-item expanded "><a href="daemon/code.html"><strong aria-hidden="true">5.6.</strong> 代码案例</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> 数据流stream_socket_*</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="stream_socket/http.html"><strong aria-hidden="true">6.1.</strong> 1.案例http/tcp</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> IO多路复用</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="epoll/epoll.html"><strong aria-hidden="true">7.1.</strong> 1.什么是Epoll</a></li><li class="chapter-item expanded "><a href="epoll/event_types.html"><strong aria-hidden="true">7.2.</strong> Select,Event,Libevent</a></li><li class="chapter-item expanded "><a href="epoll/yield.html"><strong aria-hidden="true">7.3.</strong> 2.yield与协程</a></li><li class="chapter-item expanded "><a href="epoll/socket_event.html"><strong aria-hidden="true">7.4.</strong> socket与event复用</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> docker多端编译</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="dockerbuildx/enalble.html"><strong aria-hidden="true">8.1.</strong> 1.启用buildx</a></li><li class="chapter-item expanded "><a href="dockerbuildx/create.html"><strong aria-hidden="true">8.2.</strong> 2.create构建器</a></li><li class="chapter-item expanded "><a href="dockerbuildx/bootstrap.html"><strong aria-hidden="true">8.3.</strong> 3.bootstrap启动构建器</a></li><li class="chapter-item expanded "><a href="dockerbuildx/buildx.html"><strong aria-hidden="true">8.4.</strong> 4.构建镜像buildx</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.</strong> docker-composer</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="docker-composer/argv.html"><strong aria-hidden="true">9.1.</strong> 1.参数参考</a></li><li class="chapter-item expanded "><a href="docker-composer/epay.html"><strong aria-hidden="true">9.2.</strong> 2.易支付案例</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">多进程管理</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="序言"><a class="header" href="#序言">序言</a></h1>
+<p>个人笔记
+作者 <code>adminv@88.com</code></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="什么是进程"><a class="header" href="#什么是进程">什么是进程</a></h1>
+<p>Linux 是一个多任务操作系统，它支持远大于 CPU 数量的任务（这里可以直接理解为进程）同时运行。当然，这些任务实际上并不是真的在同时运行，而是因为系统在很短的时间内，将 CPU 轮流分配给它们，造成多任务同时运行的错觉。而在每个任务运行前，CPU 都需要知道任务从哪里加载、又从哪里开始运行（这里任务的运行，就是进程的运行，简单的理解电脑运行一个进程，其实就是解释执行一段源码，而CPU就是真正执行源码的，源码放在内存中的哪一块，这个CPU是要知道的），也就是说，需要系统事先帮它设置好CPU 寄存器和程序计数器</p>
+<h3 id="1什么是进程"><a class="header" href="#1什么是进程">1.什么是进程</a></h3>
+<p>上面我们讲到进程，那么到底什么是进程呢？进程（有时候也称做任务）是指一个程序运行的实例。在 Linux 系统中，线程就是能并行运行并且与他们的父进程（创建他们的进程）共享同一地址空间（一段内存区域）和其他资源的轻量级的进程。</p>
+<h3 id="2什么是-cpu-上下文"><a class="header" href="#2什么是-cpu-上下文">2.什么是 CPU 上下文</a></h3>
+<p>CPU 寄存器和程序计数器就是 CPU 上下文，因为它们都是 CPU 在运行任何任务前，必须的依赖环境。上下文</p>
+<p>指某一时间点 CPU 寄存器和程序计数器的内容</p>
+<p>CPU 寄存器是 CPU 内置的容量小、但速度极快的内存（与之对应的是 CPU 外部相对较慢的 RAM 主内存）。</p>
+<p>程序计数器则是一个专用的寄存器，是用来存储 CPU 正在执行的指令位置、或者即将执行的下一条指令位置。</p>
+<h3 id="3什么是-cpu-上下文切换"><a class="header" href="#3什么是-cpu-上下文切换">3.什么是 CPU 上下文切换</a></h3>
+<p>CPU上下文切换就是保存上一个任务运行的寄存器和计数器信息切换到加载下一个任务的寄存器和计数器的过程</p>
+<p>就是先把前一个任务的 CPU 上下文（也就是 CPU 寄存器和程序计数器）保存起来，然后加载新任务的上下文到这些寄存器和程序计数器，最后再跳转到程序计数器所指的新位置，运行新任务。</p>
+<p>而这些保存下来的上下文，会存储在系统内核中，并在任务重新调度执行时再次加载进来。这样就能保证任务原来的状态不受影响，让任务看起来还是连续运行。</p>
+<p>详细解释就是：上下文切换可以认为是内核（操作系统的核心）在 CPU 上对于进程（包括线程）进行以下的活动：（1）挂起一个进程，将这个进程在 CPU 中的状态（上下文）存储于内存中的某处，（2）在内存中检索下一个进程的上下文并将其在 CPU 的寄存器中恢复，（3）跳转到程序计数器所指向的位置（即跳转到进程被中断时的代码行），以恢复该进程。</p>
+<h3 id="4cpu-上下文切换的类型"><a class="header" href="#4cpu-上下文切换的类型">4.CPU 上下文切换的类型</a></h3>
+<p>1.进程上下文切换
+Linux 按照特权等级，把进程的运行空间分为内核空间和用户空间，分别对应着下图中， CPU 特权等级的 Ring 0 和 Ring 3。</p>
+<p>内核空间（Ring 0）具有最高权限，可以直接访问所有资源；</p>
+<p>用户空间（Ring 3）只能访问受限资源，不能直接访问内存等硬件设备，必须通过系统调用陷入到内核中，才能访问这些特权资源。</p>
+<p><img src="process/img_1.png" alt="img_1.png" /></p>
+<p>文献来自： <a href="https://www.cnblogs.com/qingbaizhinian/p/13775327.html">https://www.cnblogs.com/qingbaizhinian/p/13775327.html</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="多线程和多进程"><a class="header" href="#多线程和多进程">多线程和多进程</a></h1>
+<p>多进程和多线程的作用相同，区别主要在于</p>
+<p>多个线程是在同一个进程内的，线程之间可以共享内存变量而实现线程间的通信。
+线程比进程更加轻量级，进程要比线程更加消耗系统资源。
+多线程存在的问题主要有</p>
+<p>线程读写变量存在着同步问题需要加锁
+锁粒度过大会存在性能问题，会导致只有一个线程在运行，其它线程都在等待锁，也就无法实现并行。
+同时使用多个锁时逻辑复杂，一旦某个锁没有被正确释放可能会发生线程死锁。
+某个线程发生致命错误会导致整个进程崩溃
+相对而言多进程更为稳定，可利用进程间通信IPC技术实现数据共享。多进程通信的方式主要包括</p>
+<p>共享内存
+共享内存和线程间读写变量时一样的，都需要加锁，同时也存在同步、死锁等问题。
+消息队列
+消息队列采用多个子进程抢占队列的模式，性能较好。
+管道、UnixSock、TCP、UDP
+可以使用read/write来传递数据，TCP/UDP使用socket来通信，子进程可以分布运行。
+利用fork系统调用可以实现并发的TCP服务器，主进程accept客户端连接。当有新的连接到来时直接fork一个子进程，子进程中循环recv/send处理数据。这种模式在请求量不多的情况下很实用，例如FTP服务器。</p>
+<p>在过去多数Linux程序都时采用这种模式，简单高效，代码量少。当有几百个并发的情况下表现不错，但在大并发的情况下消耗就会过大。</p>
+<p>例如：每个子进程都能创建一个与之对应的文件，父进程也创建一个属于自己的文件。</p>
+<pre><code class="language-php">
+&lt;?php
+$socket = socket_create(AF_INET, SOCK_STREAM, 0);
+if($socket &lt; 0){
+    $errmsg = socket_strerror($socket);
+    echo &quot;failed to create socket: {$errmsg}&quot;.PHP_EOL;
+    exit;
+}
+
+$host = &quot;0.0.0.0&quot;;
+$port = 9601;
+$ret = socket_bind($socket, $host, $port);
+if($ret &lt; 0){
+    echo &quot;failed to bind socket: {$ret}&quot;.PHP_EOL;
+    exit;
+}
+
+$ret = socket_listen($socket, 0);
+if($ret &lt; 0){
+    $errmsg = socket_strerror($ret);
+    echo &quot;failed to listen: {$errmsg}&quot;.PHP_EOL;
+    exit;
+}
+
+while(pcntl_fork() == 0){
+    $connection = @socket_accept($socket);
+    if(pcntl_fork() == 0){
+        $recv =  socket_read($connection ,8192);
+        $data = &quot;serverr: {$recv}&quot;;
+
+        socket_write($connection ,$data);
+        socket_close($connection);
+        exit(0);
+    }else{
+        socket_close($connection);
+    }
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="概念图"><a class="header" href="#概念图">概念图</a></h1>
+<p><img src="process/./img.png" alt="RUNOOB 图标" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="pcntl_exec"><a class="header" href="#pcntl_exec">pcntl_exec</a></h1>
+<p>与exec 一样</p>
+<h3 id="区别"><a class="header" href="#区别">区别</a></h3>
+<ol>
+<li>参数用法不一样</li>
+<li>pcntl_exec执行后，进程已经不属于php，而是执行的脚本内容，<code>后面代码不再执行</code></li>
+<li>exec 执行完毕后 继续执行 <code>后面代码</code></li>
+</ol>
+<pre><code class="language-php">&lt;?php
+pcntl_exec(&quot;shellxxx&quot;,[&quot;arg1&quot;,&quot;arg2&quot;],[&quot;env&quot;]);
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="pcntl_wait--pcntl_waitpid"><a class="header" href="#pcntl_wait--pcntl_waitpid">pcntl_wait || pcntl_waitpid</a></h1>
+<h2 id="pcntl_wait--任意子进程"><a class="header" href="#pcntl_wait--任意子进程">pcntl_wait() == 任意子进程</a></h2>
+<h2 id="定义"><a class="header" href="#定义">定义</a></h2>
+<pre><code class="language-php">pcntl_wait(int &amp;$status, int $options = 0, array &amp;$rusage = ?): int
+</code></pre>
+<p>如果一个子进程在调用此函数时已经退出（俗称僵尸进程），此函数立刻返回。<br />
+子进程使用的所有系统资源将被释放</p>
+<h2 id="等值演算"><a class="header" href="#等值演算">等值演算</a></h2>
+<pre><code>pcntl_wait == pcntl_waitpid(-1,&amp;$status,0); 
+</code></pre>
+<h2 id="return--"><a class="header" href="#return--">return  ()</a></h2>
+<p>pcntl_wait() 返回退出的子进程进程号，发生错误时返回 -1,如果提供了 WNOHANG 作为 option（wait3可用的系统）并且没有可用子进程时返回 0。</p>
+<h2 id="监控子进程重启子进程"><a class="header" href="#监控子进程重启子进程">监控子进程&amp;&amp;重启子进程</a></h2>
+<pre><code class="language-php">
+&lt;?php
+$childs = [];
+function fork()
+{
+    $pid = pcntl_fork();
+
+    if ($pid &lt; 0) {
+        exit('错误无法创建');
+    }
+
+    //子进程执行
+    if ($pid == 0) {
+
+        //子进程永远阻塞这里
+        while (true) {
+            sleep(10);
+        }
+    }
+
+    //父进程执行
+    if ($pid &gt; 0) {
+        global $childs;
+        $childs[$pid] = $pid;
+    }
+}
+
+//创建子进程多个
+for ($i = 0; $i &lt;= 5; $i++) {
+    fork();
+}
+
+echo '父进程(' . posix_getpid() . ')检测子进程状态并且回收' . PHP_EOL;
+while (count($childs)) {
+    $exit_id = pcntl_wait($status);
+    if ($exit_id &gt;= 0) {
+        $msg = pcntl_wtermsig($status);
+        echo sprintf('子进程： (%s) 退出，原因：%s', $exit_id, $msg) . PHP_EOL;
+        //删除数组资源句柄
+        unset($childs[$exit_id]);
+    }
+    //monitor 监控子进程
+    //子进程数量不足2个，就fork()
+    if(count($childs)&lt;2){
+        fork();
+    }
+}
+
+echo &quot;Done\n&quot;;
+</code></pre>
+<h2 id="僵尸进程说明"><a class="header" href="#僵尸进程说明">僵尸进程说明</a></h2>
+<hr />
+<blockquote>
+<p>如果一个子进程在调用此函数时已经退出（俗称僵尸进程），此函数立刻返回。子进程使用的所有系统资源将被释放。</p>
+</blockquote>
+<blockquote>
+<p>孤儿进程：一个父进程退出，而它的一个或多个子进程还在运行，那么那些子进程将成为孤儿进程。孤儿进程将被init进程(进程号为1)所收养，并由init进程对它们完成状态收集工作。</p>
+</blockquote>
+<blockquote>
+<p>僵尸进程：一个进程使用fork创建子进程，如果子进程退出，而父进程并没有调用wait或waitpid获取子进程的状态信息，那么子进程的进程描述符仍然保存在系统中。这种进程称之为僵死进程。</p>
+</blockquote>
+<blockquote>
+<p>如果进程不调用wait / waitpid的话， 那么保留的那段信息就不会释放，其进程号就会一直被占用，但是系统所能使用的进程号是有限的，如果大量的产生僵死进程，将因为没有可用的进程号而导致系统不能产生新的进程. 此即为僵尸进程的危害，应当避免。</p>
+</blockquote>
+<blockquote>
+<p>一个进程在调用exit命令结束自己的生命的时候，其实它并没有真正的被销毁， 而是留下一个称为僵尸进程（Zombie）的数据结构（系统调用exit，它的作用是 使进程退出，但也仅仅限于将一个正常的进程变成一个僵尸进程，并不能将其完全销毁）</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="pcntl_waitpid"><a class="header" href="#pcntl_waitpid">pcntl_waitpid</a></h1>
+<pre><code class="language-php">pcntl_waitpid(int $pid, int &amp;$status, int $options = 0): int
+</code></pre>
+<h2 id="options"><a class="header" href="#options">options</a></h2>
+<pre><code>define('WNOHANG', 1);如果没有子进程退出立刻返回
+define('WUNTRACED', 2);子进程已经退出并且其状态未报告时返回
+</code></pre>
+<pre><code class="language-php">
+&lt;?php
+for ((int)$i = 0; $i &lt; 4; $i++) {
+    $_process_id = \pcntl_fork();
+
+    if ($_process_id == -1) {
+        $this-&gt;print_r('创建子进程失败 for_id:' . $i);
+        continue;
+    }
+
+    if($_process_id &gt;=1){
+        /**
+         * 父进程会得到子进程号，所以这里是父进程执行的逻辑
+         * WNOHANG 子进程没退出，不阻塞
+         * WUNTRACED 子进程没退出，就阻塞,如果子进程退出，就返回子进程ID
+         * 等待子进程中断，防止子进程成为僵尸进程。
+        */
+        $exit_process_id=\pcntl_waitpid($_process_id,$status,WUNTRACED);
+
+        if($exit_process_id&gt;0){
+
+            $this-&gt;print_r(sprintf('子进程ID（%s） 状态:%s',$exit_process_id,$status));
+        }
+        continue;
+    }
+
+    sleep(3);
+    //子进程 执行的逻辑
+    $this-&gt;print_r(posix_getppid().'子进程PID'.posix_getpid().' | hello');
+
+    exit(0);
+}
+</code></pre>
+<h2 id="僵尸进程说明-1"><a class="header" href="#僵尸进程说明-1">僵尸进程说明</a></h2>
+<hr />
+<blockquote>
+<p>如果一个子进程在调用此函数时已经退出（俗称僵尸进程），此函数立刻返回。子进程使用的所有系统资源将被释放。</p>
+</blockquote>
+<blockquote>
+<p>孤儿进程：一个父进程退出，而它的一个或多个子进程还在运行，那么那些子进程将成为孤儿进程。孤儿进程将被init进程(进程号为1)所收养，并由init进程对它们完成状态收集工作。</p>
+</blockquote>
+<blockquote>
+<p>僵尸进程：一个进程使用fork创建子进程，如果子进程退出，而父进程并没有调用wait或waitpid获取子进程的状态信息，那么子进程的进程描述符仍然保存在系统中。这种进程称之为僵死进程。</p>
+</blockquote>
+<blockquote>
+<p>如果进程不调用wait / waitpid的话， 那么保留的那段信息就不会释放，其进程号就会一直被占用，但是系统所能使用的进程号是有限的，如果大量的产生僵死进程，将因为没有可用的进程号而导致系统不能产生新的进程. 此即为僵尸进程的危害，应当避免。</p>
+</blockquote>
+<blockquote>
+<p>一个进程在调用exit命令结束自己的生命的时候，其实它并没有真正的被销毁， 而是留下一个称为僵尸进程（Zombie）的数据结构（系统调用exit，它的作用是 使进程退出，但也仅仅限于将一个正常的进程变成一个僵尸进程，并不能将其完全销毁）</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="返回子进程中断的原因"><a class="header" href="#返回子进程中断的原因">返回子进程中断的原因</a></h2>
+<h3 id="中断信号值int"><a class="header" href="#中断信号值int">中断信号值(int)</a></h3>
+<blockquote>
+<p>kill pid 默认15(SIGTERM)</p>
+</blockquote>
+<h2 id="linux下信号中断"><a class="header" href="#linux下信号中断">linux下信号中断</a></h2>
+<pre><code class="language-shell">kill -l
+</code></pre>
+<p><img src="pcntl_wait/./kill_list.png" alt="kill" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="返回当前进程的pid"><a class="header" href="#返回当前进程的pid">返回当前进程的PID</a></h2>
+<ul>
+<li>如果是父进程就是 父进程pid</li>
+<li>如果是子进程就是 子进程pid</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="返回当前进程的父进程pid"><a class="header" href="#返回当前进程的父进程pid">返回当前进程的父进程PID</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="1创建子进程终止父进程"><a class="header" href="#1创建子进程终止父进程">1.创建子进程，终止父进程</a></h1>
+<h2 id="关键函数-pcntl_fork-exit"><a class="header" href="#关键函数-pcntl_fork-exit">关键函数 <code>pcntl_fork</code> <code>exit</code></a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="2子进程中创建新会话"><a class="header" href="#2子进程中创建新会话">2.子进程中创建新会话</a></h1>
+<h2 id="posix_setsid"><a class="header" href="#posix_setsid">posix_setsid</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="3改变工作目录"><a class="header" href="#3改变工作目录">3.改变工作目录</a></h1>
+<h2 id="chdir-更换root目录"><a class="header" href="#chdir-更换root目录">chdir('/') 更换root目录</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="4重设文件创建掩码"><a class="header" href="#4重设文件创建掩码">4.重设文件创建掩码</a></h1>
+<h2 id="umask0"><a class="header" href="#umask0">umask(0)</a></h2>
+<p>改变当前的umask为宽松掩码</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="5关闭文件描述符"><a class="header" href="#5关闭文件描述符">5.关闭文件描述符</a></h1>
+<h2 id="fclose"><a class="header" href="#fclose">fclose</a></h2>
+<p>关闭一个打开的文件指针</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="code"><a class="header" href="#code">code</a></h1>
+<pre><code class="language-php">&lt;?php
+$childs = [];
+
+
+function deamon()
+{
+    $pid = pcntl_fork();
+    if ($pid &lt; 0) {
+        exit('错误无法创建');
+    }
+    //子进程执行
+    if ($pid == 0) {
+        echo sprintf('子进程(%s)被创建', $pid) . PHP_EOL;
+        //2.让子进程会话变成主会话
+        $sid=posix_setsid();
+        if($sid&lt;=0){
+            die('set fail');
+        }
+
+        //3.
+        if(chdir('/')===false){
+            die('fail to change dir ');
+        }
+
+        //4.与chmod相反 默认继承了父进程的文件创建掩码
+        umask(0);
+
+        //5.默认继承了父进程打开的文件
+        fclose(STDIN);
+        fclose(STDOUT);
+        fclose(STDERR);
+        while (true) {
+            sleep(10);
+        }
+    }
+
+    //父进程执行
+    if ($pid &gt; 0) {
+       //1.2 父进程退出，
+        //2让子进程会话变成主会话
+        exit();
+    }
+}
+function fork()
+{
+    $pid = pcntl_fork();
+
+    if ($pid &lt; 0) {
+        exit('错误无法创建');
+    }
+
+    //子进程执行
+    if ($pid == 0) {
+
+        //子进程永远阻塞这里
+        while (true) {
+            sleep(10);
+        }
+    }
+
+    //父进程执行
+    if ($pid &gt; 0) {
+        global $childs;
+        $childs[$pid] = $pid;
+    }
+}
+
+//初始化创建5个子进程
+for ($i = 0; $i &lt;= 5; $i++) {
+    fork();
+}
+
+echo '父进程(' . posix_getpid() . ')检测子进程状态并且回收' . PHP_EOL;
+while (count($childs)) {
+    $exit_id = pcntl_wait($status);
+    if ($exit_id &gt;= 0) {
+        $msg = pcntl_wtermsig($status);
+        //删除数组资源句柄
+        echo sprintf('子进程： (%s) 退出，原因：%s', $exit_id, $msg) . PHP_EOL;
+        unset($childs[$exit_id]);
+    }
+    //monitor 监控子进程
+    //子进程数量不足2个，就fork()
+    if (count($childs) &lt; 2) {
+        fork();
+    }
+}
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="1案例httptcp"><a class="header" href="#1案例httptcp">1.案例http/tcp</a></h1>
+<h2 id="纯手撸一个-单进程下的socket-io复用"><a class="header" href="#纯手撸一个-单进程下的socket-io复用">纯手撸一个 单进程下的socket IO复用</a></h2>
+<h3 id="可以使用pcntl_fork-把下面的代码进行多进程创建提高php在服务器上的cpu利用率"><a class="header" href="#可以使用pcntl_fork-把下面的代码进行多进程创建提高php在服务器上的cpu利用率">可以使用pcntl_fork 把下面的代码进行多进程创建，提高php在服务器上的CPU利用率</a></h3>
+<p><img src="stream_socket/img.png" alt="img.png" /></p>
+<pre><code class="language-php">&lt;?php
+
+class SocketServer
+{
+
+    public $socket;
+
+    public $all_sockets = [];
+
+    public function __construct(string $address)
+    {
+        //创建监听socket服务 资源句柄 ,,resource|false
+        $this-&gt;socket = \stream_socket_server($address, $php_errorcode, $php_errormsg);
+
+        if ($this-&gt;socket == false) {
+            throw new \Exception('创建失败！', $php_errorcode, $php_errormsg);
+        }
+
+        \stream_set_blocking($this-&gt;socket, false);
+
+        //当前初始化的第一个socket服务 资源句柄放入 资源池
+        $this-&gt;all_sockets[intval($this-&gt;socket)] = $this-&gt;socket;
+        echo ('=== 服务器启动|' . $address.PHP_EOL);
+    }
+
+    public function run()
+    {
+        //死循环
+        while (true) {
+            $write=$except=null;
+            $allSocket=$this-&gt;all_sockets;
+            \stream_select($allSocket, $write, $except, 60);
+
+            foreach ($allSocket as $index =&gt; $socket) {
+                //如果 streamsocket 服务句柄 == 当前socket资源池的id，说明有新连接
+                if ($this-&gt;socket === $socket) {
+                    // 接受由 stream_socket_server() 创建的套接字连接 timeout/覆盖默认的套接字接受的超时时限。输入的时间需以秒为单位
+                    // resource|false
+                    $new_conn_socket = \stream_socket_accept($this-&gt;socket);
+                    if ($new_conn_socket == false) {
+                        //可能是建立连接异常
+                        continue;
+                    }
+                    $this-&gt;onConn($new_conn_socket);
+                    $this-&gt;all_sockets[intval($new_conn_socket)] = $new_conn_socket;
+                    echo '=== 新连接建立'.(int)($new_conn_socket).PHP_EOL;
+                } else {
+                    //如果不是新的连接,则看看有无数据过来,读取长度 65536
+                    $buff = fread($socket, 0xFFFF);
+                    // 不能是 == ''
+                    if ($buff === '' || $buff === false) {
+                        //客户端已断开
+                        echo '=== 断开连接'.intval($socket).PHP_EOL;
+                        $this-&gt;onClose($socket);
+                        unset($this-&gt;all_sockets[intval($socket)]);
+                        fclose($socket);
+                        continue;
+                    }
+                    //处理发来的数据
+                    $this-&gt;onMessage($socket, $buff);
+                }
+            }
+        }
+    }
+
+
+    public function onConn(mixed $socket)
+    {
+
+    }
+
+    public function onClose(mixed $socket)
+    {
+    }
+
+    public function onMessage(mixed $socket, $buff)
+    {
+        $body = 'hello word';
+        $header = [
+            'HTTP/1.1 200 OK',
+            'Connection: keep-alive',
+            'Niubi: test123',
+            'Content-length:' . strlen($body)
+        ];
+        $header_string = \implode(chr(0x0D) . chr(0x0A), $header);
+
+        $data = $header_string . chr(0x0D) . chr(0x0A) . chr(0x0D) . chr(0x0A) . $body;
+
+
+//        echo '用户数据：'.$buff.PHP_EOL;
+        fwrite($socket, $data);
+
+        unset($this-&gt;all_sockets[intval($socket)]);
+        fclose($socket);
+    }
+
+}
+
+
+$a = new SocketServer('tcp://0.0.0.0:88');
+$a-&gt;run();;
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="1什么是epoll"><a class="header" href="#1什么是epoll">1.什么是Epoll</a></h1>
+<h2 id="epoll模型的两种触发模式"><a class="header" href="#epoll模型的两种触发模式">Epoll模型的两种触发模式</a></h2>
+<ul>
+<li>水平触发</li>
+<li>边缘触发</li>
+</ul>
+<h2 id="level_triggered水平触发"><a class="header" href="#level_triggered水平触发">Level_triggered(水平触发)：</a></h2>
+<p>水平触发。这种方式下，如果监听到了有X个事件发生，那么内核态会将这些事件拷贝到用户态，但是可惜的是，如果用户只处理了其中一件，剩余的X-1件出于某种原因并没有理会，那么下次的时候，这些未处理完的X-1个事件依然会从内核态拷贝到用户态。这样做是有阴阳两面的，阳面是事件安全的不会发生丢失，阴面是对于性能来说是一种浪费。其实这个时候的epoll颇有些类似于poll的工作方式。</p>
+<p>当被监控的文件描述符上有可读写事件发生时，epoll_wait()会通知处理程序去读写。如果这次没有把数据一次性全部读写完(如读写缓冲区太小)，那么下次调用 epoll_wait()时，它还会通知你在上没读写完的文件描述符上继续读写，当然如果你一直不去读写，它会一直通知你！！！如果系统中有大量你不需要读写的就绪文件描述符，而它们每次都会返回，这样会大大降低处理程序检索自己关心的就绪文件描述符的效率！！！</p>
+<h2 id="edge_triggered边缘触发"><a class="header" href="#edge_triggered边缘触发">Edge_triggered(边缘触发)：</a></h2>
+<p>边缘触发。这种方式下，是鸡血版本的epoll，是释放自我的epoll，也是应该是正确的使用方式。这种情况下，如果发生了X个事件，然而你只处理了其中1个事件，那么剩余的X-1个事件就算“丢失”了。性能是上去了，与之俱来的就是可能的事件丢失。</p>
+<p>当被监控的文件描述符上有可读写事件发生时，epoll_wait()会通知处理程序去读写。如果这次没有把数据全部读写完(如读写缓冲区太小)，那么下次调用epoll_wait()时，它不会通知你，也就是它只会通知你一次，直到该文件描述符上出现第二次可读写事件才会通知你！！！这种模式比水平触发效率高，系统不会充斥大量你不关心的就绪文件描述符！！！</p>
+<p>参考来源
+<a href="http://t.ti-node.com/thread/6445811931600125952">http://t.ti-node.com/thread/6445811931600125952</a></p>
+<blockquote>
+<h2 id="阻塞概念"><a class="header" href="#阻塞概念">阻塞概念</a></h2>
+</blockquote>
+<h1 id="io阻塞与非阻塞"><a class="header" href="#io阻塞与非阻塞">IO阻塞与非阻塞</a></h1>
+<h2 id="阻塞io"><a class="header" href="#阻塞io">阻塞IO：</a></h2>
+<p>当你去读一个阻塞的文件描述符时，如果在该文件描述符上没有数据可读，那么它会一直阻塞(通俗一点就是一直卡在调用函数那里)，直到有数据可读。当你去写一个阻塞的文件描述符时，如果在该文件描述符上没有空间(通常是缓冲区)可写，那么它会一直阻塞，直到有空间可写。以上的读和写我们统一指在某个文件描述符进行的操作，不单单指真正的读数据，写数据，还包括接收连接accept()，发起连接connect()等操作...</p>
+<h2 id="非阻塞io"><a class="header" href="#非阻塞io">非阻塞IO：</a></h2>
+<p>当你去读写一个非阻塞的文件描述符时，不管可不可以读写，它都会立即返回，返回成功说明读写操作完成了，返回失败会设置相应errno状态码，根据这个errno可以进一步执行其他处理。它不会像阻塞IO那样，卡在那里不动！！！</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="selecteventlibevent"><a class="header" href="#selecteventlibevent">Select,Event,Libevent</a></h1>
+<h3 id="ck10"><a class="header" href="#ck10">CK10</a></h3>
+<p>坊间传闻，在epoll出世前，QQ用户量剧增，
+但是select以及select的高配版本poll都无法解决他们的问题，
+于是乎QQ当年的服务器就不得不用UDP协议来避规这个问题，
+一直到后来有了epoll，QQ开始逐步在PC客户端中的配置项中允许用户选择UDP服务器或TCP服务器。</p>
+<h3 id="select"><a class="header" href="#select">select</a></h3>
+<p>尽管select是POSIX标准。即便是select的高配版本poll，也比epoll差太多太多。</p>
+<p>每收到X个（ X &gt;= 1 ) 事件触发的时候，需要你自己foreach每个事件，会造成群惊效应。</p>
+<ul>
+<li>select可管理的fd的数量是<code>1024</code>个</li>
+</ul>
+<h3 id="epoll"><a class="header" href="#epoll">epoll</a></h3>
+<p>每收到X个（ X &gt;= 1 ）事件触发，会告诉你具体。会把具体的Fd给你</p>
+<ul>
+<li>理论上可以搞定无上限的fd</li>
+<li>只挑出可读写（其实严格意义上还有异常）的活跃的fd，其余的fd不理会</li>
+<li>使用MMAP加速内核态数据拷贝</li>
+</ul>
+<h3 id="比喻"><a class="header" href="#比喻">比喻</a></h3>
+<p>每当一个新的socket(fd)请求 来的时候，会携带 一份资源集(fd list)。
+select 或者epoll 会告诉你 某个fd已经可读/写</p>
+<p>Libevent官网<a href="https://libevent.org/">https://libevent.org/</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="2yield与协程-generator"><a class="header" href="#2yield与协程-generator">2.yield与协程 Generator</a></h1>
+<p>在2012年，Nikic就发表了一篇关于PHP yield多任务的文章 
+<a href="http://nikic.github.io/2012/12/22/Cooperative-multitasking-using-coroutines-in-PHP.html">http://nikic.github.io/2012/12/22/Cooperative-multitasking-using-coroutines-in-PHP.html</a></p>
+<ul>
+<li>yield只能用在function中，但用了yield就已经不是传统意义上的function了，同时如果你企图在function之外的其他地方用yield，你会被打脸。</li>
+<li>yield的最重要作用就是：自己中断一坨代码的执行，然后主动让出CPU控制权给路人甲；然后又能通过一些方式从刚才中断的地方恢复运行。这个就比较屌了，假如你请求了一个费时10s的服务器API，此时是可以让出CPU给路人甲。粗暴地说上面的过程就算是协程的基本概念。</li>
+</ul>
+<pre><code class="language-php">&lt;?php
+function gen1() {
+  for( $i = 1; $i &lt;= 10; $i++ ) {
+    echo &quot;GEN1 : {$i}&quot;.PHP_EOL;
+    // sleep没啥意思，主要就是运行时候给你一种切实的调度感，你懂么
+    // 就是那种“你看！你看！尼玛,我调度了！卧槽”
+    sleep( 1 );
+    // 这句很关键，表示自己主动让出CPU，我不下地狱谁下地狱
+    yield;
+  }
+}
+function gen2() {
+  for( $i = 1; $i &lt;= 10; $i++ ) {
+    echo &quot;GEN2 : {$i}&quot;.PHP_EOL;
+    // sleep没啥意思，主要就是运行时候给你一种切实的调度感，你懂么
+    // 就是那种“你看！你看！尼玛,我调度了！卧槽”
+    sleep( 1 );
+    // 这句很关键，表示自己主动让出CPU，我不下地狱谁下地狱
+    yield;
+  }
+}
+$task1 = gen1();
+$task2 = gen2();
+while( true ) {
+  // 首先我运行task1，然后task1主动下了地狱
+  echo $task1-&gt;current();
+  // 这会儿我可以让task2介入进来了
+  echo $task2-&gt;current();
+  // task1恢复中断
+  $task1-&gt;next();
+  // task2恢复中断
+  $task2-&gt;next();
+}
+</code></pre>
+<p><img src="epoll/img.png" alt="img.png" /></p>
+<p>你要知道，如果function gen1和function gen2中没有yield，而是普通函数，你是无法中断其中的for循环的，</p>
+<h3 id="正常的效果应该是"><a class="header" href="#正常的效果应该是">正常的效果应该是</a></h3>
+<pre><code class="language-text">GEN1: 1
+GEN1: 2
+GEN1: 3
+....
+GEN1: 10
+GEN2: 1
+GEN2: 2
+GEN2: 3
+....
+GEN2: 10
+
+</code></pre>
+<h2 id="yield-与-curl"><a class="header" href="#yield-与-curl">yield 与 CURL</a></h2>
+<pre><code class="language-php">&lt;?php
+$ch1 = curl_init();
+// 这个地址中的php，我故意sleep了5秒钟，然后输出一坨json
+curl_setopt( $ch1, CURLOPT_URL, &quot;http://www.selfctrler.com/index.php/test/test1&quot; );
+curl_setopt( $ch1, CURLOPT_HEADER, 0 );
+$mh = curl_multi_init();
+curl_multi_add_handle( $mh, $ch1 );
+function gen1( $mh, $ch1 ) {
+  do {
+    $mrc = curl_multi_exec( $mh, $running );
+    // 请求发出后，让出cpu
+    $rs = yield;
+    echo &quot;外部发送数据{$rs}&quot;.PHP_EOL;    
+  } while( $running &gt; 0 );
+  $ret = curl_multi_getcontent( $ch1 );
+  echo $ret.PHP_EOL;
+  return false;
+}
+function gen2() {
+  for ( $i = 1; $i &lt;= 10; $i++ ) {
+    echo &quot;gen2 : {$i}&quot;.PHP_EOL;
+    file_put_contents( &quot;./yield.log&quot;, &quot;gen2&quot;.$i, FILE_APPEND );
+    $rs = yield;
+    echo &quot;外部发送数据{$rs}&quot;.PHP_EOL;    
+  }
+}
+$gen1 = gen1( $mh, $ch1 );
+$gen2 = gen2();
+while( true ) {
+  echo $gen1-&gt;current();
+  echo $gen2-&gt;current();
+  $gen1-&gt;send(&quot;gen1&quot;);
+  $gen2-&gt;send(&quot;gen2&quot;);
+}
+</code></pre>
+<p>将$gen1-&gt;next()修改成了$gen1-&gt;send(“gen1”)</p>
+<p>在function gen1中yield有了返回值，并且将返回值打印出来</p>
+<p>：yield和send，是可以双向通信的，同时告诉我们send可以用来恢复原来中断的代码，而且在恢复中断的同时可以携带信息回去。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="使用event边缘触发执行socket处理"><a class="header" href="#使用event边缘触发执行socket处理">使用Event边缘触发执行Socket处理</a></h1>
+<pre><code class="language-php">&lt;?php
+define( &quot;DS&quot;, DIRECTORY_SEPARATOR );
+define( &quot;ROOT&quot;, __DIR__ );
+spl_autoload_register( function( $s_class_name ) {
+    $s_path = str_replace( &quot;\\&quot;, &quot;/&quot;, $s_class_name );
+    $s_file = ROOT.DS.$s_path.'.php';
+    require_once $s_file;
+} );
+
+
+// 创建一个非阻塞的listen-socket资源
+$r_listen_socket = socket_create( AF_INET, SOCK_STREAM, SOL_TCP );
+socket_set_option( $r_listen_socket, SOL_SOCKET, SO_REUSEADDR, 1 );
+socket_set_option( $r_listen_socket, SOL_SOCKET, SO_REUSEPORT, 1 );
+socket_bind( $r_listen_socket, '0.0.0.0', 6666 );
+socket_listen( $r_listen_socket );
+socket_set_nonblock( $r_listen_socket );
+
+
+// 创建一个Event-Loop
+// 然后将上面的listen-socket加入到Event-Loop中
+// 这里就已经比较直白了，只要你要创建一个资源
+// 这个资源可以是socket、可以是stream等等
+// 因为Event-Loop已经被我们抽象称了模块
+// 所以你创建的资源只要支持Event，那么都很方便地通过Event-Loop模块写出来
+$o_event_loop = new Event\Libevent();
+$o_event_loop-&gt;add( $r_listen_socket, Event\Libevent::EV_READ, function() use( $r_listen_socket, $o_event_loop ) {
+    $r_connection_socket = socket_accept( $r_listen_socket );
+    $o_event_loop-&gt;add( $r_connection_socket, Event\Libevent::EV_WRITE, function() use ( $r_connection_socket, $o_event_loop ) {
+        $s_data = &quot;Hello HTTP World!&quot;;
+        $s_html = &quot;HTTP/1.1 200 OK\r\nContent-Length: &quot;.strlen( $s_data ).&quot;\r\n\r\n{$s_data}\n&quot;;
+        $i_written = socket_write( $r_connection_socket, $s_html, strlen( $s_html ) );
+        $o_event_loop-&gt;del( $r_connection_socket, Event\Libevent::EV_ALL );
+    });
+} );
+$o_event_loop-&gt;loop();
+</code></pre>
+<ol>
+<li>第一步：在PHP里各种能支持Event-Loop的资源，比如socket、比如stream</li>
+<li>第二步：初始化Event-Loop，然后将第一步里创建好的资源扔到Event-Loop里</li>
+<li>第三步：完成</li>
+</ol>
+<p>参考
+<a href="https://cloud.tencent.com/developer/article/1596705">https://cloud.tencent.com/developer/article/1596705</a></p>
+<pre><code class="language-php">&lt;?php
+namespace Event;
+class Libevent {
+    const  EV_ALL   = 1;
+    const  EV_READ  = 2;
+    const  EV_WRITE = 4;
+    const  EV_EXCEPTION    = 8;
+    public $o_event_config = null;
+    public $o_event_base   = null;
+    /*
+     * @desc : 保存事件event
+     * */
+    public $a_event  = array();
+    public $a_client = array();
+    public function __construct() {
+        $o_event_config = new \EventConfig();
+        $o_event_base   = new \EventBase( $o_event_config );
+        $this-&gt;o_event_config = $o_event_config;
+        $this-&gt;o_event_base   = $o_event_base;
+    }
+    /*
+     * @desc  : 添加一个事件
+     * @param : socket fd
+     * @param : event type, EV_READ EV_WRITE
+     * @param : callback
+     * */
+    public function add( $r_fd, $i_event_type, $f_callback ) {
+        $i_event_flag = $i_event_type == self::EV_READ ? \Event::READ | \Event::PERSIST : \Event::WRITE | \Event::PERSIST ;
+        $o_event = new \Event( $this-&gt;o_event_base, $r_fd, $i_event_flag, $f_callback );
+        $o_event-&gt;add();
+        $i_fd = intval( $r_fd );
+        $this-&gt;a_event[ $i_fd ][ $i_event_type ] = $o_event;
+        $this-&gt;a_client[ $i_fd ] = $r_fd;
+        //echo json_encode( $this-&gt;a_client ).&quot; | &quot;.json_encode( $this-&gt;a_event ).PHP_EOL;
+    }
+    /*
+     * @desc : 删除一个事件
+     * */
+    public function del( $r_fd, $i_event_type ) {
+        $i_fd = intval( $r_fd );
+        // 删除所有事件类型
+        if ( self::EV_ALL === $i_event_type ) {
+            if ( isset( $this-&gt;a_event[ $i_fd ] ) ) {
+                if ( isset( $this-&gt;a_event[ $i_fd ][ self::EV_WRITE ] ) ) {
+                    echo &quot;del write&quot;.PHP_EOL;
+                    $o_event = $this-&gt;a_event[ $i_fd ][ self::EV_WRITE ];
+                    $o_event-&gt;free();
+                    unset( $this-&gt;a_event[ $i_fd ][ self::EV_WRITE ] );
+                }
+                if ( isset( $this-&gt;a_event[ $i_fd ][ self::EV_READ ] ) ) {
+                    echo &quot;del read&quot;.PHP_EOL;
+                    $o_event = $this-&gt;a_event[ $i_fd ][ self::EV_READ ];
+                    $o_event-&gt;free();
+                    unset( $this-&gt;a_event[ $i_fd ][ self::EV_READ ] );
+                }
+                if ( isset( $this-&gt;a_event[ $i_fd ][ self::EV_EXCEPTION ] ) ) {
+                    echo &quot;del exception&quot;.PHP_EOL;
+                    $o_event = $this-&gt;a_event[ $i_fd ][ self::EV_EXCEPTION ];
+                    $o_event-&gt;free();
+                    unset( $this-&gt;a_event[ $i_fd ][ self::EV_EXCEPTION ] );
+                }
+            }
+        }
+        // 删除指定事件类型
+        else {
+            if ( isset( $this-&gt;a_event[ $i_fd ] ) ) {
+                if ( isset( $this-&gt;a_event[ $i_fd ][ $i_event_type ] ) ) {
+                    $o_event = $this-&gt;a_event[ $i_fd ][ $i_event_type ];
+                    $o_event-&gt;free();
+                    unset( $this-&gt;a_event[ $i_fd ][ $i_event_type ] );
+                }
+            }
+        }
+        unset( $this-&gt;a_client[ $i_fd ] );
+    }
+    /*
+     * @desc : 陷入事件循环
+     * */
+    public function loop() {
+        $this-&gt;o_event_base-&gt;loop();
+    }
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="1启用buildx"><a class="header" href="#1启用buildx">1.启用buildx</a></h1>
+<h2 id="环境暴露"><a class="header" href="#环境暴露">环境暴露</a></h2>
+<pre><code class="language-shell">export DOCKER_CLI_EXPERIMENTAL=enabled
+</code></pre>
+<p>验证是否开启：</p>
+<pre><code class="language-shell">docker buildx version
+</code></pre>
+<h2 id="启用-binfmt_misc"><a class="header" href="#启用-binfmt_misc">启用 binfmt_misc</a></h2>
+<blockquote>
+<p>如果你使用的是 Docker 桌面版（MacOS 和 Windows），默认已经启用了 binfmt_misc，可以跳过这一步。</p>
+</blockquote>
+<pre><code class="language-shell">docker run --rm --privileged docker/binfmt:66f9012c56a8316f9244ffd7622d7c21c1f6f28d
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="2create"><a class="header" href="#2create">2.create</a></h1>
+<p>Docker 默认会使用不支持多 CPU 架构的构建器，我们需要手动切换。</p>
+<pre><code class="language-shell">docker buildx create --use --name mybuilder
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="3bootstrap启动构建器"><a class="header" href="#3bootstrap启动构建器">3.bootstrap启动构建器</a></h1>
+<pre><code class="language-shell">docker buildx inspect mybuilder --bootstrap
+</code></pre>
+<pre><code class="language-shell">docker buildx inspect mybuilder --bootstrap
+[+] Building 0.7s (1/1) FINISHED                                                
+ =&gt; [internal] booting buildkit                                            0.7s
+ =&gt; =&gt; starting container buildx_buildkit_mybuilder0                       0.7s
+Name:   mybuilder
+Driver: docker-container
+
+Nodes:
+Name:      mybuilder0
+Endpoint:  unix:///var/run/docker.sock
+Status:    running
+Platforms: linux/arm64, linux/amd64, linux/riscv64, linux/ppc64le, linux/s390x, linux/386, linux/mips64le, linux/mips64, linux/arm/v7, linux/arm/v6
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="4构建镜像buildx"><a class="header" href="#4构建镜像buildx">4.构建镜像buildx</a></h1>
+<blockquote>
+<p>需要提前通过 docker login 命令登录认证 Docker Hub。 </p>
+</blockquote>
+<pre><code class="language-shell">docker buildx build -t yangchuansheng/hello-arch --platform=linux/arm,linux/arm64,linux/amd64,linux/386,linux/arm/v7 . --push
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="1参数参考"><a class="header" href="#1参数参考">1.参数参考</a></h1>
+<ul>
+<li>version: &quot;3.7&quot; #docker引擎版本</li>
+</ul>
+<h2 id="build"><a class="header" href="#build">build</a></h2>
+<pre><code class="language-yaml">version: &quot;3.7&quot;
+services:
+  webapp:
+    build:
+      context: ./dir
+      dockerfile: Dockerfile-alternate
+      args:
+        buildno: 1
+      labels:
+        - &quot;com.example.description=Accounting webapp&quot;
+        - &quot;com.example.department=Finance&quot;
+        - &quot;com.example.label-with-empty-value&quot;
+      target: prod
+</code></pre>
+<ul>
+<li>context：上下文路径。</li>
+<li>dockerfile：指定构建镜像的 Dockerfile 文件名。</li>
+<li>args：添加构建参数，这是只能在构建过程中访问的环境变量。</li>
+<li>labels：设置构建镜像的标签。</li>
+<li>target：多层构建，可以指定构建哪一层。</li>
+</ul>
+<h2 id="command"><a class="header" href="#command">command</a></h2>
+<pre><code class="language-yaml">command: [&quot;bundle&quot;, &quot;exec&quot;, &quot;thin&quot;, &quot;-p&quot;, &quot;3000&quot;]
+</code></pre>
+<h2 id="depends_on"><a class="header" href="#depends_on">depends_on</a></h2>
+<blockquote>
+<p>以依赖性顺序启动服务。在以下示例中，先启动 db 和 redis ，才会启动 web。</p>
+</blockquote>
+<pre><code class="language-yaml">version: &quot;3.7&quot;
+services:
+  web:
+    build: .
+    depends_on:
+      - db
+      - redis
+  redis:
+    image: redis
+  db:
+    image: postgres
+</code></pre>
+<h2 id="dns"><a class="header" href="#dns">DNS</a></h2>
+<pre><code class="language-yaml">dns:
+  - 8.8.8.8
+  - 9.9.9.9
+</code></pre>
+<h2 id="env"><a class="header" href="#env">ENV</a></h2>
+<pre><code class="language-yaml">env_file:
+  - ./common.env
+  - ./apps/web.env
+  - /opt/secrets.env
+</code></pre>
+<h2 id="environment"><a class="header" href="#environment">environment</a></h2>
+<pre><code class="language-yaml">environment:
+  RACK_ENV: development
+  SHOW: 'true'
+  &quot;PASSWORD=123456&quot;
+</code></pre>
+<h2 id="network_mode"><a class="header" href="#network_mode">network_mode</a></h2>
+<pre><code class="language-yaml">network_mode: &quot;bridge&quot;
+#network_mode: &quot;host&quot;
+#network_mode: &quot;none&quot;
+
+services:
+  some-service:
+    networks:
+      some-network:
+        aliases:
+          - alias1
+</code></pre>
+<h2 id="restart"><a class="header" href="#restart">restart</a></h2>
+<pre><code class="language-yaml">restart: &quot;no&quot;
+#restart: always
+#restart: on-failure #在容器非正常退出时（退出状态非0），才会重启容器。
+#restart: unless-stopped #在容器退出时总是重启容器，但是不考虑在Docker守护进程启动时就已经停止了的容器
+</code></pre>
+<h2 id="volumes"><a class="header" href="#volumes">volumes:</a></h2>
+<pre><code class="language-yml">   volumes:
+     - ./mysql:/var/lib/mysql #宿主机：容器
+</code></pre>
+<h1 id="2易支付案例"><a class="header" href="#2易支付案例">2.易支付案例</a></h1>
+<pre><code class="language-yaml">version: &quot;3.0&quot;
+services:
+  paywebfpm:
+    build: ./web
+    ports:
+      - 80:80
+    volumes:
+      - ./web:/app/   #宿主机：容器
+    dns: 
+      - 223.5.5.5
+      - 223.6.6.6
+    networks:
+      pay-network:
+        aliases:
+          - paywebfpm
+        
+  mariadb:
+    image: qqfirst/mariadb:latest
+    ports:
+      - 3306:3306
+    depends_on:
+      - paywebfpm
+    environment:
+      - &quot;ROOT_PASSWORD:123456&quot;
+    volumes:
+      - ./mysql:/var/lib/mysql
+    dns: 
+      - 223.5.5.5
+      - 223.6.6.6
+    networks:
+      pay-network:
+        aliases:
+          - mariadb
+
+networks:
+  pay-network:
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="2易支付案例-1"><a class="header" href="#2易支付案例-1">2.易支付案例</a></h1>
+<pre><code class="language-yaml">version: &quot;3.0&quot;
+services:
+  paywebfpm:
+    build: ./web
+    ports:
+      - 80:80
+    volumes:
+      - ./web:/app/   #宿主机：容器
+    dns: 
+      - 223.5.5.5
+      - 223.6.6.6
+    networks:
+      pay-network:
+        aliases:
+          - paywebfpm
+        
+  mariadb:
+    image: qqfirst/mariadb:latest
+    ports:
+      - 3306:3306
+    depends_on:
+      - paywebfpm
+    environment:
+      - &quot;ROOT_PASSWORD:123456&quot;
+    volumes:
+      - ./mysql:/var/lib/mysql
+    dns: 
+      - 223.5.5.5
+      - 223.6.6.6
+    networks:
+      pay-network:
+        aliases:
+          - mariadb
+
+networks:
+  pay-network:
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://0.0.0.0:4000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </body>
+</html>

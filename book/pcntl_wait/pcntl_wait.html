@@ -1,0 +1,294 @@
+<!DOCTYPE HTML>
+<html lang="zh_CN" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>pcntl_wait()||monitor - 多进程管理</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../start.html"><strong aria-hidden="true">1.</strong> 序言</a></li><li class="spacer"></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 理论</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../process/3.html"><strong aria-hidden="true">2.1.</strong> 什么是进程</a></li><li class="chapter-item expanded "><a href="../process/1.html"><strong aria-hidden="true">2.2.</strong> 线程进程区别</a></li><li class="chapter-item expanded "><a href="../process/2.html"><strong aria-hidden="true">2.3.</strong> stream/socket</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> pcntl_*</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../pcntl_exec/1.html"><strong aria-hidden="true">3.1.</strong> pcntl_exec()</a></li><li class="chapter-item expanded "><a href="../pcntl_wait/pcntl_wait.html" class="active"><strong aria-hidden="true">3.2.</strong> pcntl_wait()||monitor</a></li><li class="chapter-item expanded "><a href="../pcntl_wait/pcntl_waitpid.html"><strong aria-hidden="true">3.3.</strong> pcntl_waitpid()</a></li><li class="chapter-item expanded "><a href="../pcntl_wait/pcntl_wtermsig.html"><strong aria-hidden="true">3.4.</strong> pcntl_wtermsig()</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> posix_*</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../posix/posix_getpid.html"><strong aria-hidden="true">4.1.</strong> posix_getpid()</a></li><li class="chapter-item expanded "><a href="../posix/posix_getppid.html"><strong aria-hidden="true">4.2.</strong> posix_getppid()</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> 进程守护deamon</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../daemon/1.html"><strong aria-hidden="true">5.1.</strong> 1.创建子进程，终止父进程</a></li><li class="chapter-item expanded "><a href="../daemon/2.html"><strong aria-hidden="true">5.2.</strong> 2.子进程中创建新会话</a></li><li class="chapter-item expanded "><a href="../daemon/3.html"><strong aria-hidden="true">5.3.</strong> 3.改变工作目录</a></li><li class="chapter-item expanded "><a href="../daemon/4.html"><strong aria-hidden="true">5.4.</strong> 4.重设文件创建掩码</a></li><li class="chapter-item expanded "><a href="../daemon/5.html"><strong aria-hidden="true">5.5.</strong> 5.关闭文件描述符</a></li><li class="chapter-item expanded "><a href="../daemon/code.html"><strong aria-hidden="true">5.6.</strong> 代码案例</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> 数据流stream_socket_*</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../stream_socket/http.html"><strong aria-hidden="true">6.1.</strong> 1.案例http/tcp</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> IO多路复用</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../epoll/epoll.html"><strong aria-hidden="true">7.1.</strong> 1.什么是Epoll</a></li><li class="chapter-item expanded "><a href="../epoll/event_types.html"><strong aria-hidden="true">7.2.</strong> Select,Event,Libevent</a></li><li class="chapter-item expanded "><a href="../epoll/yield.html"><strong aria-hidden="true">7.3.</strong> 2.yield与协程</a></li><li class="chapter-item expanded "><a href="../epoll/socket_event.html"><strong aria-hidden="true">7.4.</strong> socket与event复用</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> docker多端编译</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../dockerbuildx/enalble.html"><strong aria-hidden="true">8.1.</strong> 1.启用buildx</a></li><li class="chapter-item expanded "><a href="../dockerbuildx/create.html"><strong aria-hidden="true">8.2.</strong> 2.create构建器</a></li><li class="chapter-item expanded "><a href="../dockerbuildx/bootstrap.html"><strong aria-hidden="true">8.3.</strong> 3.bootstrap启动构建器</a></li><li class="chapter-item expanded "><a href="../dockerbuildx/buildx.html"><strong aria-hidden="true">8.4.</strong> 4.构建镜像buildx</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.</strong> docker-composer</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../docker-composer/argv.html"><strong aria-hidden="true">9.1.</strong> 1.参数参考</a></li><li class="chapter-item expanded "><a href="../docker-composer/epay.html"><strong aria-hidden="true">9.2.</strong> 2.易支付案例</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">多进程管理</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="pcntl_wait--pcntl_waitpid"><a class="header" href="#pcntl_wait--pcntl_waitpid">pcntl_wait || pcntl_waitpid</a></h1>
+<h2 id="pcntl_wait--任意子进程"><a class="header" href="#pcntl_wait--任意子进程">pcntl_wait() == 任意子进程</a></h2>
+<h2 id="定义"><a class="header" href="#定义">定义</a></h2>
+<pre><code class="language-php">pcntl_wait(int &amp;$status, int $options = 0, array &amp;$rusage = ?): int
+</code></pre>
+<p>如果一个子进程在调用此函数时已经退出（俗称僵尸进程），此函数立刻返回。<br />
+子进程使用的所有系统资源将被释放</p>
+<h2 id="等值演算"><a class="header" href="#等值演算">等值演算</a></h2>
+<pre><code>pcntl_wait == pcntl_waitpid(-1,&amp;$status,0); 
+</code></pre>
+<h2 id="return--"><a class="header" href="#return--">return  ()</a></h2>
+<p>pcntl_wait() 返回退出的子进程进程号，发生错误时返回 -1,如果提供了 WNOHANG 作为 option（wait3可用的系统）并且没有可用子进程时返回 0。</p>
+<h2 id="监控子进程重启子进程"><a class="header" href="#监控子进程重启子进程">监控子进程&amp;&amp;重启子进程</a></h2>
+<pre><code class="language-php">
+&lt;?php
+$childs = [];
+function fork()
+{
+    $pid = pcntl_fork();
+
+    if ($pid &lt; 0) {
+        exit('错误无法创建');
+    }
+
+    //子进程执行
+    if ($pid == 0) {
+
+        //子进程永远阻塞这里
+        while (true) {
+            sleep(10);
+        }
+    }
+
+    //父进程执行
+    if ($pid &gt; 0) {
+        global $childs;
+        $childs[$pid] = $pid;
+    }
+}
+
+//创建子进程多个
+for ($i = 0; $i &lt;= 5; $i++) {
+    fork();
+}
+
+echo '父进程(' . posix_getpid() . ')检测子进程状态并且回收' . PHP_EOL;
+while (count($childs)) {
+    $exit_id = pcntl_wait($status);
+    if ($exit_id &gt;= 0) {
+        $msg = pcntl_wtermsig($status);
+        echo sprintf('子进程： (%s) 退出，原因：%s', $exit_id, $msg) . PHP_EOL;
+        //删除数组资源句柄
+        unset($childs[$exit_id]);
+    }
+    //monitor 监控子进程
+    //子进程数量不足2个，就fork()
+    if(count($childs)&lt;2){
+        fork();
+    }
+}
+
+echo &quot;Done\n&quot;;
+</code></pre>
+<h2 id="僵尸进程说明"><a class="header" href="#僵尸进程说明">僵尸进程说明</a></h2>
+<hr />
+<blockquote>
+<p>如果一个子进程在调用此函数时已经退出（俗称僵尸进程），此函数立刻返回。子进程使用的所有系统资源将被释放。</p>
+</blockquote>
+<blockquote>
+<p>孤儿进程：一个父进程退出，而它的一个或多个子进程还在运行，那么那些子进程将成为孤儿进程。孤儿进程将被init进程(进程号为1)所收养，并由init进程对它们完成状态收集工作。</p>
+</blockquote>
+<blockquote>
+<p>僵尸进程：一个进程使用fork创建子进程，如果子进程退出，而父进程并没有调用wait或waitpid获取子进程的状态信息，那么子进程的进程描述符仍然保存在系统中。这种进程称之为僵死进程。</p>
+</blockquote>
+<blockquote>
+<p>如果进程不调用wait / waitpid的话， 那么保留的那段信息就不会释放，其进程号就会一直被占用，但是系统所能使用的进程号是有限的，如果大量的产生僵死进程，将因为没有可用的进程号而导致系统不能产生新的进程. 此即为僵尸进程的危害，应当避免。</p>
+</blockquote>
+<blockquote>
+<p>一个进程在调用exit命令结束自己的生命的时候，其实它并没有真正的被销毁， 而是留下一个称为僵尸进程（Zombie）的数据结构（系统调用exit，它的作用是 使进程退出，但也仅仅限于将一个正常的进程变成一个僵尸进程，并不能将其完全销毁）</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../pcntl_exec/1.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../pcntl_wait/pcntl_waitpid.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../pcntl_exec/1.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../pcntl_wait/pcntl_waitpid.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://0.0.0.0:4000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

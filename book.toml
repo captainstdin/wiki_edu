@@ -1,0 +1,14 @@
+[book]
+authors = []
+language = "zh_CN"
+multilingual = false
+src = "src"
+title="多进程管理"
+
+
+[preprocessor.links]
+
+[preprocessor.index]
+[output.html.playpen]
+editable = true
+

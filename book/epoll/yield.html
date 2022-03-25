@@ -1,0 +1,309 @@
+<!DOCTYPE HTML>
+<html lang="zh_CN" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>2.yield与协程 - 多进程管理</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../start.html"><strong aria-hidden="true">1.</strong> 序言</a></li><li class="spacer"></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 理论</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../process/3.html"><strong aria-hidden="true">2.1.</strong> 什么是进程</a></li><li class="chapter-item expanded "><a href="../process/1.html"><strong aria-hidden="true">2.2.</strong> 线程进程区别</a></li><li class="chapter-item expanded "><a href="../process/2.html"><strong aria-hidden="true">2.3.</strong> stream/socket</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> pcntl_*</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../pcntl_exec/1.html"><strong aria-hidden="true">3.1.</strong> pcntl_exec()</a></li><li class="chapter-item expanded "><a href="../pcntl_wait/pcntl_wait.html"><strong aria-hidden="true">3.2.</strong> pcntl_wait()||monitor</a></li><li class="chapter-item expanded "><a href="../pcntl_wait/pcntl_waitpid.html"><strong aria-hidden="true">3.3.</strong> pcntl_waitpid()</a></li><li class="chapter-item expanded "><a href="../pcntl_wait/pcntl_wtermsig.html"><strong aria-hidden="true">3.4.</strong> pcntl_wtermsig()</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> posix_*</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../posix/posix_getpid.html"><strong aria-hidden="true">4.1.</strong> posix_getpid()</a></li><li class="chapter-item expanded "><a href="../posix/posix_getppid.html"><strong aria-hidden="true">4.2.</strong> posix_getppid()</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> 进程守护deamon</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../daemon/1.html"><strong aria-hidden="true">5.1.</strong> 1.创建子进程，终止父进程</a></li><li class="chapter-item expanded "><a href="../daemon/2.html"><strong aria-hidden="true">5.2.</strong> 2.子进程中创建新会话</a></li><li class="chapter-item expanded "><a href="../daemon/3.html"><strong aria-hidden="true">5.3.</strong> 3.改变工作目录</a></li><li class="chapter-item expanded "><a href="../daemon/4.html"><strong aria-hidden="true">5.4.</strong> 4.重设文件创建掩码</a></li><li class="chapter-item expanded "><a href="../daemon/5.html"><strong aria-hidden="true">5.5.</strong> 5.关闭文件描述符</a></li><li class="chapter-item expanded "><a href="../daemon/code.html"><strong aria-hidden="true">5.6.</strong> 代码案例</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> 数据流stream_socket_*</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../stream_socket/http.html"><strong aria-hidden="true">6.1.</strong> 1.案例http/tcp</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> IO多路复用</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../epoll/epoll.html"><strong aria-hidden="true">7.1.</strong> 1.什么是Epoll</a></li><li class="chapter-item expanded "><a href="../epoll/event_types.html"><strong aria-hidden="true">7.2.</strong> Select,Event,Libevent</a></li><li class="chapter-item expanded "><a href="../epoll/yield.html" class="active"><strong aria-hidden="true">7.3.</strong> 2.yield与协程</a></li><li class="chapter-item expanded "><a href="../epoll/socket_event.html"><strong aria-hidden="true">7.4.</strong> socket与event复用</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> docker多端编译</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../dockerbuildx/enalble.html"><strong aria-hidden="true">8.1.</strong> 1.启用buildx</a></li><li class="chapter-item expanded "><a href="../dockerbuildx/create.html"><strong aria-hidden="true">8.2.</strong> 2.create构建器</a></li><li class="chapter-item expanded "><a href="../dockerbuildx/bootstrap.html"><strong aria-hidden="true">8.3.</strong> 3.bootstrap启动构建器</a></li><li class="chapter-item expanded "><a href="../dockerbuildx/buildx.html"><strong aria-hidden="true">8.4.</strong> 4.构建镜像buildx</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.</strong> docker-composer</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../docker-composer/argv.html"><strong aria-hidden="true">9.1.</strong> 1.参数参考</a></li><li class="chapter-item expanded "><a href="../docker-composer/epay.html"><strong aria-hidden="true">9.2.</strong> 2.易支付案例</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">多进程管理</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="2yield与协程-generator"><a class="header" href="#2yield与协程-generator">2.yield与协程 Generator</a></h1>
+<p>在2012年，Nikic就发表了一篇关于PHP yield多任务的文章 
+<a href="http://nikic.github.io/2012/12/22/Cooperative-multitasking-using-coroutines-in-PHP.html">http://nikic.github.io/2012/12/22/Cooperative-multitasking-using-coroutines-in-PHP.html</a></p>
+<ul>
+<li>yield只能用在function中，但用了yield就已经不是传统意义上的function了，同时如果你企图在function之外的其他地方用yield，你会被打脸。</li>
+<li>yield的最重要作用就是：自己中断一坨代码的执行，然后主动让出CPU控制权给路人甲；然后又能通过一些方式从刚才中断的地方恢复运行。这个就比较屌了，假如你请求了一个费时10s的服务器API，此时是可以让出CPU给路人甲。粗暴地说上面的过程就算是协程的基本概念。</li>
+</ul>
+<pre><code class="language-php">&lt;?php
+function gen1() {
+  for( $i = 1; $i &lt;= 10; $i++ ) {
+    echo &quot;GEN1 : {$i}&quot;.PHP_EOL;
+    // sleep没啥意思，主要就是运行时候给你一种切实的调度感，你懂么
+    // 就是那种“你看！你看！尼玛,我调度了！卧槽”
+    sleep( 1 );
+    // 这句很关键，表示自己主动让出CPU，我不下地狱谁下地狱
+    yield;
+  }
+}
+function gen2() {
+  for( $i = 1; $i &lt;= 10; $i++ ) {
+    echo &quot;GEN2 : {$i}&quot;.PHP_EOL;
+    // sleep没啥意思，主要就是运行时候给你一种切实的调度感，你懂么
+    // 就是那种“你看！你看！尼玛,我调度了！卧槽”
+    sleep( 1 );
+    // 这句很关键，表示自己主动让出CPU，我不下地狱谁下地狱
+    yield;
+  }
+}
+$task1 = gen1();
+$task2 = gen2();
+while( true ) {
+  // 首先我运行task1，然后task1主动下了地狱
+  echo $task1-&gt;current();
+  // 这会儿我可以让task2介入进来了
+  echo $task2-&gt;current();
+  // task1恢复中断
+  $task1-&gt;next();
+  // task2恢复中断
+  $task2-&gt;next();
+}
+</code></pre>
+<p><img src="img.png" alt="img.png" /></p>
+<p>你要知道，如果function gen1和function gen2中没有yield，而是普通函数，你是无法中断其中的for循环的，</p>
+<h3 id="正常的效果应该是"><a class="header" href="#正常的效果应该是">正常的效果应该是</a></h3>
+<pre><code class="language-text">GEN1: 1
+GEN1: 2
+GEN1: 3
+....
+GEN1: 10
+GEN2: 1
+GEN2: 2
+GEN2: 3
+....
+GEN2: 10
+
+</code></pre>
+<h2 id="yield-与-curl"><a class="header" href="#yield-与-curl">yield 与 CURL</a></h2>
+<pre><code class="language-php">&lt;?php
+$ch1 = curl_init();
+// 这个地址中的php，我故意sleep了5秒钟，然后输出一坨json
+curl_setopt( $ch1, CURLOPT_URL, &quot;http://www.selfctrler.com/index.php/test/test1&quot; );
+curl_setopt( $ch1, CURLOPT_HEADER, 0 );
+$mh = curl_multi_init();
+curl_multi_add_handle( $mh, $ch1 );
+function gen1( $mh, $ch1 ) {
+  do {
+    $mrc = curl_multi_exec( $mh, $running );
+    // 请求发出后，让出cpu
+    $rs = yield;
+    echo &quot;外部发送数据{$rs}&quot;.PHP_EOL;    
+  } while( $running &gt; 0 );
+  $ret = curl_multi_getcontent( $ch1 );
+  echo $ret.PHP_EOL;
+  return false;
+}
+function gen2() {
+  for ( $i = 1; $i &lt;= 10; $i++ ) {
+    echo &quot;gen2 : {$i}&quot;.PHP_EOL;
+    file_put_contents( &quot;./yield.log&quot;, &quot;gen2&quot;.$i, FILE_APPEND );
+    $rs = yield;
+    echo &quot;外部发送数据{$rs}&quot;.PHP_EOL;    
+  }
+}
+$gen1 = gen1( $mh, $ch1 );
+$gen2 = gen2();
+while( true ) {
+  echo $gen1-&gt;current();
+  echo $gen2-&gt;current();
+  $gen1-&gt;send(&quot;gen1&quot;);
+  $gen2-&gt;send(&quot;gen2&quot;);
+}
+</code></pre>
+<p>将$gen1-&gt;next()修改成了$gen1-&gt;send(“gen1”)</p>
+<p>在function gen1中yield有了返回值，并且将返回值打印出来</p>
+<p>：yield和send，是可以双向通信的，同时告诉我们send可以用来恢复原来中断的代码，而且在恢复中断的同时可以携带信息回去。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../epoll/event_types.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../epoll/socket_event.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../epoll/event_types.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../epoll/socket_event.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://0.0.0.0:4000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
